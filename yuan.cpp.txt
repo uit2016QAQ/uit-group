@@ -1,0 +1,114 @@
+#include <iostream>
+#include<string>
+#include "stack.h"    
+using namespace std;
+
+//扫描数字的函数    
+bool isnumber(char x) {
+	if (x >= '0' && x <= '9')
+		return true;
+	return false;
+}
+
+//判断运算符优先级的函数    
+int priority(char x) {
+	if (x == '+' || x == '-')
+		return 0;
+	else if (x == '*' || x == '/')
+		return 1;
+	else if (x == '(' || x == ')')
+		return -1;
+	else if (x == '#')
+		return -2;
+}
+
+	
+//运算的函数    
+int calculate(string s) {
+
+	stack<int> number;//用于存表达式中的数据
+	stack<char> charl;//用于存表达式中的运算符和判断符
+	char top;//栈顶的元素
+	int a, b;
+	//在表达式的长度内进行判断
+	for (int i = 0; i < s.size(); i++) {
+		if (isnumber(s[i])) {
+			int Temp = 0;
+			string temp;//定义串型来存数字
+
+			temp += s[i];
+			while (isnumber(s[++i]))
+				temp += s[i];
+			
+			for (int j = 0; j < temp.size(); j++) {
+				Temp = Temp * 10 + temp[j] - 48;
+			}//将字符数字转换成整形数字 
+			
+			number.push(Temp);//让数据入栈
+			temp.clear();//将串型数据删除
+		}
+//
+		if (!isnumber(s[i])) {
+			if (charl.empty()) {
+				charl.push(s[i]);
+			}//入栈第一个符号'#'
+
+			else {
+				charl.get_top(top);
+				if (priority(s[i]) > priority(top) || s[i] == '(') {
+					charl.push(s[i]);
+				}//入栈高优先级的运算符 
+//
+				else {
+					while (priority(s[i]) <= priority(top)) {
+						if (top == '#'&&s[i] == '#') {
+							int wang;
+							charl.pop();
+							number.get_top(wang);
+							cout << "\n结果为：" << wang << endl;
+							number.pop();
+							return 0;
+						}//当运算符实现完全后，只剩下'#'    
+						else if (top == '('&&s[i] == ')') {
+							++i;
+						}
+//
+						else {
+							number.get_top(a);
+							number.pop();
+							number.get_top(b);
+							number.pop();
+						}
+						if (top == '+') {
+							b += a;
+							number.push(b);
+						}
+						else if (top == '-') {
+							b -= a;
+							number.push(b);
+						}
+						else if (top == '*') {
+							b *= a;
+							number.push(b);
+						}
+						else if (top == '/') {
+							b /= a;
+							number.push(b);
+						}
+						charl.pop();
+						charl.get_top(top);
+					}
+					charl.push(s[i]);//表达式结束的标志 
+				}
+			}
+		}   
+	}
+}
+		   
+int main() {
+	string wang;
+	cout << "输入一个用'#'开头和结尾的表达式：" << endl;
+	cin>>wang;
+	calculate(wang);
+	cin.get(), cin.get();
+}
