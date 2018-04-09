@@ -1,1 +1,155 @@
-12121
+#include<iostream>
+#include<string>
+#include<sstream>
+#include<vector>
+#include<cmath>
+#include<algorithm>
+#include<iomanip>
+#include"stack"
+using namespace std;
+
+stack< double > container;//建立一个double型的容器
+double my;
+
+//规定优先级
+int judge(char ch)
+{
+	int p = 0;
+	if (int(ch) >= 48 && int(ch) <= 57) p = 1;
+	else if (ch == '+' || ch == '-') p = 2;
+	else if (ch == '*' || ch == '/') p = 3;
+	else if (ch == '(' || ch == ')')p = -1;
+	return p;
+}
+string set_up(string s)//将优先级高的元素放置栈顶，按优先级顺序返回符号
+{
+	string str0;
+	stack< char > symbol;//建立一个符号栈
+	int size = s.size();//数出元素个数
+	for (int i = 0; i < size; i++)
+	{
+		if (judge(s[i]) == 1)
+		{
+			str0.push_back(s[i]);
+		}
+		else //栈中无字符
+		{
+			str0.push_back(' ');
+			if(symbol.empty())
+			symbol.push(s[i]);//增加栈中元素
+			else
+			{ 
+		     if (judge(s[i]) > judge(symbol.top())||s[i]=='(')//栈中有字符且新的优先级高
+		     {
+			   str0.push_back(' ');
+			   symbol.push(s[i]);//增加栈中元素
+		     }
+		     else if(judge(s[i]) == judge(symbol.top()))
+		     {
+			   str0.push_back(symbol.top());
+			   symbol.pop();//移除栈顶元素
+			   str0.push_back(' ');
+			   symbol.push(s[i]);
+		     }
+		     else//优先级小于栈顶元素
+		      {
+			       if (s[i] == '(')
+			        {
+					str0.push_back(s[i++]);
+					symbol.pop();
+			        }
+				   else
+				   {
+					   while (symbol.size() != 0)//如果还有元素
+					   {
+						   str0.push_back(' ');
+						   str0.push_back(symbol.top());//将该元素放到容器最后
+						   symbol.pop();
+					   }
+					   str0.push_back(' ');
+					   symbol.push(s[i]);//增加该元素到栈中
+				   }
+			}
+		     }
+		}
+	}
+	while (symbol.size() != 0)//还有剩余元素
+	{
+		str0.push_back(' ');
+		str0.push_back(symbol.top());//栈顶元素放到最后
+		symbol.pop();//移出
+	}
+	return str0;
+}
+
+//转化string到int
+double exchange(string a)
+{
+	istringstream ss(a);//从字符串中依次读字符
+	double num;
+	ss >> num;//将这些字符分割为一个一个的数
+	return num;
+}
+//进行运算
+void aadd()
+{
+	my = container.top();
+	container.pop();
+	my += container.top();
+	container.pop();
+	container.push(my);
+}
+void mminus()
+{
+	my = container.top();
+	container.pop();
+	my = container.top() - my;
+	container.pop();
+	container.push(my);
+}
+
+void mmul()
+{
+	my = container.top();
+	container.pop();
+	my *= container.top();
+	container.pop();
+	container.push(my);
+}
+
+void ddiv()
+{
+	my = container.top();
+	container.pop();
+	my = container.top() / my;
+	container.pop();
+	container.push(my);
+}
+int main()
+{
+	string str;
+	while (cout << ">> " && cin >> str)
+	{
+		stringstream ss(set_up(str));
+		string sp;
+		while (ss >> sp)
+			if (int(sp[0]) > 47 && int(sp[0]) < 58)
+			{
+				container.push(exchange(sp));
+			}
+			else if (sp[0] == '+')
+				aadd();
+			else if (sp[0] == '-')
+				mminus();
+			else if (sp[0] == '*')
+				mmul();
+			else if (sp[0] == '/')
+				ddiv();
+		cout << container.top() << endl;
+		cout << endl;
+
+	}
+}
+
+
+
