@@ -1,1 +1,77 @@
-ydwedysgygfysgf
+#include<stdbool.h>
+#include<iostream>
+#include<stdlib.h>
+using namespace std;
+#define null 0
+class stuck
+{
+private:
+	struct node
+	{
+		int data;
+		node *next;
+	};
+	node *head;
+	node *p;
+	int length;
+public:
+	stuck()
+	{
+		head = null;
+		length = 0;
+	}
+	void push(int n)
+	{
+		node *q = new node;
+		q->data = n;
+		if (head == null)
+		{
+			q->next = head;
+			head = q;
+			p = q;
+		}
+		else
+		{
+			q->next = p;
+			p = q;
+		}
+		length++;
+	}
+	int pop()
+	{
+		int data;
+		node *q;
+		if (length <= 0)
+		{
+			exit(0);
+		}
+		q = p;
+		data = p->data;
+		p = p->next;
+		delete(q);
+		length--;
+		return data;
+	}
+	int size()
+	{
+		return length;
+	}
+	int top()
+	{
+		return p->data;
+	}
+	bool isEmpty()
+	{
+		if (length == 0)
+			return true;
+		else return false;
+	}
+	void clear()
+	{
+		if (length != 0)
+		{
+			pop();
+		}
+	}
+};
+
