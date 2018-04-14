@@ -1,0 +1,23 @@
+#include<iostream>
+#include"List.h"
+using namespace std;
+int main()
+{
+	linglist<int> wang;
+	int s, d,f,r;
+	cout << "请输入创建的结点数" << endl;
+	cin >> s;
+	wang.chuangjian(s);
+	cout << "输入删除位置" << endl;
+	cin >> d;
+	wang.del(d);
+	wang.bianli();
+	cout << "输出长度" << endl;
+	cout << wang.getlen() << endl;
+	cout << "获得元素位置" << endl;
+	cin >> f;
+	wang.get(r, f);
+	cout << r << endl;
+	system("pause");
+	return 0;
+}

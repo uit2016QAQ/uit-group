@@ -1,0 +1,106 @@
+#pragma once
+#pragma
+#include<iostream>
+using namespace std;
+template <class T>
+struct list {
+	T data;
+	struct list *next;
+	struct list *prior;
+};
+template <class T>
+class linglist {
+public:
+	linglist();//构造函数
+	~linglist();//析构函数
+	void chuangjian(int i);//创建链表
+	void insert(int i);//插入元素
+	void get(int i);//获得元素
+	void del(int i);//删除元素
+	int getlen();//得到链表长度
+	void bianli();//输出链表元素
+private:
+	int length;
+	list<T> *phead;
+	list<T>*ptail;
+};
+template <class T>
+linglist<T>::linglist() {
+	length = 0;
+	phead = new list<T>;
+	phead->next = NULL;
+	phead->prior = NULL;
+}
+template <class T>
+linglist<T>::~linglist() {
+
+}
+template <class T>
+void linglist<T>::chuangjian(int i) {
+	list<T> *p;
+	p = phead;
+	if (i < 0)
+		cout << "创建有误" << endl;
+	else
+	{
+		for (int j = 0; j < i; j++) {
+			list<T> *q= new list<T>;
+			cout << "请输入元素" << endl;
+			cin >> q->data;
+			p->next = q;
+			q->prior = p;
+			q->next = NULL;
+			p = q;
+			length++;
+		}
+	}
+}
+template <class T>
+void linglist<T>::del(int i) {
+	list<T> *p = phead->next;
+	if (i > length)
+		cout << "删除的位置有误" << endl;
+	else
+	{
+		for (int j = 0; j < i - 1; j++) {
+			p = p->next;
+		}
+		p->prior->next = p->next;
+		p->next->prior = p->prior;
+		delete p;
+		length--;
+	}
+}
+template <class T>
+int linglist<T>::getlen() {
+	return length;
+}
+template <class T>
+void linglist<T>::bianli() {
+	list<T> *p;
+	p = phead->next;
+	while (p != NULL) {
+		cout << p->data << endl;
+		p = p->next;
+	}
+}
+template <class T>
+void linglist<T>::insert(int i) {
+	list<T> *p = phead->next;
+	if (i > length)
+		cout << "插入的位置有误" << endl;
+	else
+	{
+		for (int j = 0; j < i - 1; j++) {
+			p = p->next;
+		}
+		list<T> *p1 = new list<T>;
+		cout << "请输入插入的元素" << endl;
+		cin >> p1->data;
+		p1->next = p;
+		p1->prior = p->prior;
+		p->prior->next = p1;
+		p->prior = p1;
+		length++;
+	}
+}

@@ -1,0 +1,16 @@
+#include<iostream>
+using namespace std;
+class wang {
+public:
+	wang(int _data) : data(_data) {}
+	wang();
+	int data;
+};
+int main()
+{
+	wang a(5), b = a;
+	cout <<b.data << endl;
+	system("pause");
+	return 0;
+	//当拷贝的数据域没有指针的时候只是成员的一一复制，浅拷贝可行
+}

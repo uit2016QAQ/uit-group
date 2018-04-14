@@ -1,0 +1,86 @@
+#include<iostream>
+#include<stdio.h>
+using namespace std;
+
+typedef struct wang {
+	int *pase;
+	int length;//最大长度
+	int length1;//有效长度
+}WANG;
+class wanglian {
+public:
+	bool isfull(WANG &si);
+	bool isempty(WANG &si);
+	void  lianbiao(WANG &si, int len);
+	bool dayin(WANG &si);
+	bool zhuijia(WANG &si, int i);
+	bool delete1(WANG &si, int i);
+};
+int main()
+{
+	wanglian wei;
+	WANG si;
+	int q, w, e;
+	cout << "初始化链表  请输入链表的最大长度" << endl;
+	cin >> q;
+	wei.lianbiao(si, q);
+	cout << "添加元素  请输入添加的个数" << endl;
+	cin >> w;
+	wei.zhuijia(si, w);
+	cout << "删除元素  请输入删除的位置" << endl;
+	cin >> e;
+	wei.delete1(si, e);
+	cout << "打印链表" << endl;
+	wei.dayin(si);
+	system("pause");
+}
+bool wanglian::isempty(WANG &si)
+{
+	if (si.length == 0)
+		return true;
+	else
+		return false;
+}
+bool wanglian::isfull(WANG &si)
+{
+	if (si.length == si.length1)
+		return true;
+	else
+		return false;
+}
+void wanglian::lianbiao(WANG &si, int i)
+{
+	si.pase = new int[i];//构造数组
+	si.length = i;
+	si.length1 = 0;
+}
+bool wanglian::zhuijia(WANG &si, int i)
+{
+	if (isfull(si))
+		return false;
+	else
+		for (int j = 0; j < i; j++)
+		{
+			cin >> si.pase[j];
+			si.length1++;
+		}
+}
+bool wanglian::delete1(WANG &si, int i)
+{
+	if (isempty(si))
+		return false;
+	else
+	{
+		for (int j = i; j < si.length1; j++)
+			si.pase[j - 1] = si.pase[j];
+	}
+	si.length1 = si.length1- 1;
+}
+bool wanglian::dayin(WANG &si)
+{
+	if (isempty(si))
+		return false;
+	else
+		for (int i = 0; i < si.length1; i++)
+			cout << si.pase[i] << endl;
+}

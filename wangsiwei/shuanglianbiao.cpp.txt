@@ -1,0 +1,23 @@
+#include<iostream>
+#include"slist.h"
+using namespace std;
+int main()
+{
+	linglist<int> wang;
+	int s, d,g;
+	cout << "请输入创建的结点数" << endl;
+	cin >> s;
+	wang.chuangjian(s);
+	cout << "输入删除位置" << endl;
+	cin >> d;
+	wang.del(d);
+	wang.bianli();
+	cout << "请输入插入的位置" << endl;
+	cin >> g;
+	wang.insert(g);
+	wang.bianli();
+	cout << "输出长度" << endl;
+	cout << wang.getlen() << endl;
+	system("pause");
+	return 0;
+}
