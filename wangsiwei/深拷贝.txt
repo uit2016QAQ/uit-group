@@ -1,0 +1,31 @@
+#include <stdio.h>  
+#include<iostream>
+using namespace std;
+class A
+{
+public:
+	A()      // 构造函数，p指向堆中分配的一空间  
+	{
+		m_data = new char(100);
+		cout << "王思伟哈哈哈哈哈" << endl;
+	}
+	A(const A& r)//拷贝构造函数
+	{
+		m_data = new char(100);    // 为新对象重新动态分配空间  
+		memcpy(m_data, r.m_data, 1);
+		cout << "哈哈哈哈" << endl;
+	}
+	~A()     // 析构函数，释放动态分配的空间  
+	{
+	}
+private:
+	char *m_data;
+};
+
+int main()
+{
+	A a;
+	A b(a);   // 复制对象
+	system("pause");
+	return 0;
+}
