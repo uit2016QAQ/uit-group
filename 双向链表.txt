@@ -1,0 +1,102 @@
+#include<string>
+#include<iostream>
+using namespace std;
+#define null 0
+typedef class test point;
+class test
+{
+    public:
+	   int data;
+       point *print, *next;
+};
+
+point *intput(point **head, int n)
+{
+	point *p, *q;
+	(*head) = new point;
+	if ((*head) == null)
+		exit(0);
+	(*head)->next = null;
+	(*head)->print = null;
+	p = (*head);
+	for(int i=0;i<n;i++)
+	{
+		q = new point;
+		if (q == null)
+		{
+			exit(0);
+		}
+		cout << "输入的第" << i + 1 << "个数字" << endl;
+		cin >> q->data;
+		q->next = null;
+		p->next = q;
+		q->print = p;
+		p = q;
+	}
+	return p;
+}
+void print(point *head,int n)
+{
+	point *p;
+	p = new point;
+	p = head->next;
+	if (head == null)
+		cout << "error" << endl;
+	for (int i = 0; i < n; i++)
+	{
+		cout << p->data << " ";
+		p = p->next;
+	}
+		cout << endl;
+		system("pause");
+}
+int search(point *head)
+{
+	int x;
+	cout << "输入删除元素" << endl;
+	cin >> x;
+	point *p =head->next;
+	while (p != null)
+	{
+		if (p->data == x)
+		{
+			return x;
+		}
+		p = p->next;
+	}
+	return 0;
+}
+void deletep(point **head, int n)
+{
+	point *q;
+	q = (*head)->next;
+	for (int i = 1; i < n; i++)
+	{
+		q = q->next;
+	}
+	if (q->next == null)
+	{
+		q->print->next = null;
+		free(q);
+	}
+	else
+	{
+		q->next->print = q->print;
+		q->print->next = q->next;
+		free(q);
+	}
+}
+int main()
+{
+	int r,n;
+	point *head, *next;
+	cout << "输入数字个数";
+	cin >> n;
+	next = intput(&head, n);
+	print(head, n);
+	r=search(head);
+	deletep(&head,r);
+	print(head, n);
+	system("pause");
+	return 0;
+}
