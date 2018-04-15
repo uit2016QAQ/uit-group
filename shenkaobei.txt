@@ -1,0 +1,82 @@
+#include<iostream>  
+#include<cstring> 
+#include<cstdlib>
+using namespace std;  
+class Person{  
+private :  
+    //声明一个字符指针 ，在构造函数和复制函数的时候动态分配内存   
+    char *name;  
+    int age;   
+    public :  
+        //有参构造函数   
+    Person(char *nm,int a){  
+        //计算传入的字符串的长度   
+        int length=strlen(nm);  
+        //动态分配内存   
+        name=new char[length+1];  
+        //复制 字符串   
+        strcpy(name,nm);  
+        age=a;  
+        cout<<"有参"<<endl;  
+        }  
+        //无参构造函数   
+    Person(){  
+        cout<<"wucan"<<endl;  
+        }  
+        //通过传入对象调用复制构造函数   
+    Person(const  Person & p) {  
+        //调用operator=函数   
+        this->operator=(p);   
+        }  
+    //显示函数   
+    void show(){  
+        cout<<name<<":"<<age<<endl;  
+        }  
+        //复制构造函数   
+    Person & operator=(const Person & p){  
+        //如果复制的对象相同的话，那么就直接返回当前的对象   
+           cout<<"123"<<endl;  
+        if(this==&p){  
+                      
+        return *this;  
+        }   
+        //获得传入的对象的字符串的长度   
+        int length=strlen(p.name);  
+        //删除当前的字符串的的空间   
+        //delete []name;  
+        //为传入的对象的字符串分配新的空间   
+        name=new char[length+1];  
+            strcpy(name,p.name);  
+            age=p.age;   
+            return *this;  
+        }   
+        //析构函数   
+        ~Person(){  
+            delete [] name;}  
+        };  
+        void Fn1(Person p){  
+            }  
+        Person Fn2(Person p){  
+            Person p1=p;  
+            p.~Person();  
+            return p1;  
+            }  
+    int main(){  
+        Person p("jike",5);  
+        p.show();  
+          
+        //第一种调用复制构造函数的方法   
+       // Person p1;     
+        //p1=p;  
+        //第二种调用复制 构造函数的方法、  
+        //Person p1(p);  
+       //第三种调用复制构造函数的方法  
+       Person p1=Person(p);  
+      //第四种调用复制构造函数的方法,  
+     // Person *p1=new Person(p) ;  
+      //执行析构函数的话，如果没有写深拷贝的话，会出现乱码   
+        p.~Person();   
+        (p1).show();  
+        system("pause");  
+        return 0;  
+        }  
