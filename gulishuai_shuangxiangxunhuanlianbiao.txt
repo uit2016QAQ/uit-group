@@ -1,0 +1,68 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define OK 1
+#define ERROR 0
+typedef  char ElemType;
+typedef int Status;
+typedef struct Dualnode
+{
+	ElemType data;
+	struct Dualnode *prior;
+	struct Dualnode *next;
+}Dualnode,*Dulinklist;
+Status initlist(Dulinklist *L)
+{
+	Dualnode *p,*q;
+	int i;
+	*L=(Dulinklist)malloc(sizeof(Dualnode));
+	if(!(*L))
+	return ERROR;
+	(*L)->next=(*L)->prior=NULL;
+	p=(*L);
+	for(i=0;i<26;i++)
+	{
+	q=(Dualnode *)malloc(sizeof(Dualnode));
+	if(!q)
+	return ERROR;
+	q->data='A'+i;
+	q->prior=p;
+	q->next=p->next;
+	p->next=q;
+	p=q;
+    }
+    p->next=(*L)->next;
+    (*L)->next->prior=p;
+    return OK;
+}
+void a(Dulinklist *L,int i)
+{
+	if(i>0)
+	{
+		do{
+			(*L)=(*L)->next;
+		}while(--i);
+		
+	}
+	if(i<0)
+	{
+		do{
+			(*L)=(*L)->next; 
+		}while(++i);
+	}
+}
+int main()
+{
+	Dulinklist L;
+	int i,n;
+	initlist(&L);
+	printf("请输入一个整数：");
+	scanf("%d",&n);
+	printf("\n");
+	a(&L,n);
+	for(i=0;i<26;i++)
+	{
+		L=L->next;
+		printf("%c",L->data);
+	}
+	return 0;
+}
