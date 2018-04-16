@@ -1,0 +1,32 @@
+#include<iostream>
+#include<stdlib.h>
+using namespace std;
+void xuanzepaixv(int a[], int n)
+{
+	int i = 0, j = 0,k=0,b;
+	for (i = 0; i < n - 1; i++)
+	{
+		k = i;
+		for (j = i + 1; j < n; j++)
+		{
+			if (a[k] > a[j])
+				k = j;
+		}
+		if (k != i)
+		{
+			b = a[k];
+			a[k] = a[i];
+			a[i] = b;
+		}
+	}
+}
+int main()
+{
+	int a[10] = { 0,3,5,1,6,9,1,20,23,12 };
+	int i;
+	xuanzepaixv(a, 10);
+	for (i = 0; i < 10; i++)
+		cout << a[i] << endl;
+	return 0;
+	system("pause");
+}
