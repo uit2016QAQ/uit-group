@@ -1,0 +1,50 @@
+/*对浅拷贝和深拷贝的理解：如果一个类拥有资源，当这个类的对象发生复制过程的时候，
+资源重新分配，这个过程就是深拷贝，反之，没有重新分配资源，就是浅拷贝。*/
+
+/*浅拷贝：只是简单数据类型之间的赋值，浅拷贝完全能够胜任，但是碰到有指针的时候，两个类之间浅拷贝，
+那么两个对象中的指针会指向同一个地址，那么析构函数执行的时候就会发生错误（同一指针释放了两次）*/
+
+/*深拷贝：在浅拷贝的基础上对指针拷贝进行处理，让两个类指针中的指针指向不同的区域，这样两个类指针虽然内容想到，
+但是是存储在内存的不同区域。*/
+
+//以下实验代码操作使类指针和类内成员p指针都指向了不同的地址，进行深拷贝时避免拷贝数据时发生错误
+#include<iostream>
+class rect  
+{  
+public:  
+  
+    rect();  
+    rect(const rect *r);  
+    ~rect();  
+  
+private:  
+    int width, height;  
+    int *p;  
+};  
+rect::rect(const rect *r)  
+{  
+    width = r->width;  
+    height = r->height;  
+    p = new int;  
+    *p = *(r->p);  
+}  
+  
+rect::rect()  
+{  
+    p = new int(100);  
+}  
+  
+rect::~rect()  
+{  
+    if (p != NULL)  
+        delete p;  
+}  
+int _tmain(int argc, _TCHAR* argv[])  
+{  
+    rect *rect1;  
+    rect *rect2;  
+    rect1 = new rect;  
+    rect2 = new rect(rect1);  
+  
+    return 0;  
+}  

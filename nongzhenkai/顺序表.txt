@@ -1,0 +1,149 @@
+#include<stdio.h>  
+#include<stdlib.h>  
+#define MAXSIZE 100  
+struct List  
+{  
+    int element[MAXSIZE];  //链表中最大节点数  
+    int len;                //当前链表的长度  
+};  
+  
+void print(List *t);  
+int Isemtty(List *t)      //判断链表是否为空  
+{  
+    if(t->len==0)  
+        return 0;  
+    else  
+        return -1;    
+}  
+  
+void getElement(List *t,int i) //获取表中第i个元素（下标从0开始）  
+{  
+    if(i<0||i>t->len)  
+        printf("fail!\n");  
+    else  
+        printf("%d\n",t->element[i]);  
+}  
+  
+void add(List *t)             //向链表中添加节点  
+{     
+    int i,j;  
+    printf("input the count of new numner:");  
+    scanf("%d",&j);  
+    printf("input new numbers:\n");  
+    for(i=0;i<j;i++)  
+    {  
+        scanf("%d",&(t->element[i]));  
+        t->len++;  
+    }  
+    printf("添加成功!\n");  
+}  
+  
+void insert(List *t)  
+{  
+    int i,j,x;  
+    printf("input the value of i and x :");  //在表中第i个节点之前插入一个节点  
+    scanf("%d%d",&i,&x);  
+    if(i<=0||i>t->len||t->len==MAXSIZE)  //可以插入的条件  
+        printf("can not insret!\n");  
+    else  
+    {  
+        for(j=t->len;j>=i;j--)  
+        {  
+            t->element[j]=t->element[j-1];  //从插入位置开始所有节点后移  
+        }  
+        t->element[i]=x;  
+        t->len++;  
+    }  
+      
+}  
+  
+void Delete(List *t,int i)               //删除表中第i节点  
+{   
+    int j;  
+    if(i<0||i>=t->len)  
+        printf("can not delete!\n");  
+    else  
+    {   
+        for(j=i;j<t->len;j++)  
+            t->element[j]=t->element[j+1];  //从被删除位置下一个节点开始所有节点前移  
+        t->len--;  
+    }  
+}  
+void clear(List *t)             //清空链表  
+{  
+    t->len=0;  
+}  
+  
+void modify(List *t,int i)   //修改链表中第i个节点  
+{   int b;  
+printf("intut a number:");  
+scanf("%d",&b);  
+if(i<0||i>t->len)  
+printf("can not modify!\n");  
+else  
+t->element[i]=b;  
+  
+}  
+  
+void show(List *t)     //显示链表中所有节点的数据  
+{  
+    int i=0;  
+    for(;i<t->len;i++)  
+        printf("%2d",t->element[i]);  
+    printf("\n");  
+}  
+  
+int main()  
+{  
+      
+    struct List *p;  
+    p=new List;  
+    p->len=0;  
+    int ch,i,x;  
+    add(p);  
+    while(1)  
+    {  
+    printf("******************************************************\n");  
+    printf(" 1.judge 2.Getelement 3.add  4.delete \n 5.insert 6.show 7.modify 8.clear 0.quit\n");  
+    printf("******************************************************\n");   
+    printf("please input your choice:");  
+    scanf("%d",&ch);  
+    switch(ch)  
+    {  
+    case 1: printf("%d\n",Isemtty(p));  
+            break;  
+    case 2:   
+        {  
+              
+            printf("input a number:");  
+            scanf("%d",&i);  
+            getElement(p,i);  
+            break;  
+        }  
+    case 3: add(p);  
+           break;  
+    case 4:  {  
+         printf("input value of i:");  
+         scanf("%d",&i);  
+         Delete(p,i);  
+         break;  
+             }  
+    case 5: insert(p);  
+            break;  
+    case 6: show(p);  
+            break;  
+    case 7:  {  
+        printf("input value of i:");  
+        scanf("%d",&i);  
+        modify(p,i);  
+         break;  
+             }  
+    case 8: clear(p);  
+            break;  
+    case 0: exit(0);      
+    default:printf("error! please input again:\n");    
+            break;  
+            }  
+    }  
+    return 0;  
+}  

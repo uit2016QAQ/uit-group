@@ -1,0 +1,162 @@
+#include<iostream>  
+#include<stdio.h>  
+#include<math.h>  
+#define LEN sizeof(struct DNodelist)  
+using namespace std;  
+typedef struct DNodelist    //定义结构体  
+{  
+    int data;               //结点数据域  
+    struct DNodelist *prior;//结点前向指针  
+    struct DNodelist *next; //节点后向指针  
+}DNodelist;  
+//函数声明部分  
+void Error(char *s);                             // 错误处理函数  
+DNodelist *Creat_DNodelist(void);                 //创建双向链表函数  
+void Insert_DNodelist(DNodelist &l, int i, int e);  //向双链表中第i个结点插入元素e  
+void Delete_DNodelist(DNodelist &l, int i, int e);  //删除链表中第i个结点的元素，并用e返回  
+int  GetLength_DNodelist(DNodelist l);              //双向链表的长度  
+DNodelist *Find_DNodelist(DNodelist &l, int i);   //查找链表中第i个结点，并返回该结点的指针  
+void Modly_DNodelist(DNodelist &l, int e);        //查找双向链表中数据域为e的元素的结点，并将给位置输出  
+void Print_DNodelist(DNodelist &l);               //显示双向链表中的数据域中的元素  
+//函数编写部分  
+void Error(char *s)  
+{  
+    cout << s << endl;  
+    exit(1);  
+}  
+DNodelist *Creat_DNodelist(void)  
+{  
+    int i, length = 0, data = 0;  
+    DNodelist *Tail = NULL;  
+    DNodelist *pnew = NULL;  
+    DNodelist *head = (DNodelist *)malloc(LEN);  
+    if (NULL == head)  
+        Error("位置错误!");  
+    head->data = 0;  
+    head->prior = NULL;  
+    head->next = NULL;  
+    Tail = head;  
+    cout << "请输入想要创建链表的长度：";  
+    cin >> length;  
+    for (i = 1; i<length + 1; i++)  
+    {  
+        pnew = (DNodelist *)malloc(LEN);  
+        if (NULL == pnew)  
+            Error("位置错误!");  
+        cin >> data;  
+        pnew->data = data;  
+        pnew->next = NULL;  
+        pnew->prior = Tail;  
+        Tail->next = pnew;  
+        Tail = pnew;  
+    }  
+    return head;  
+}  
+int GetLength_DNodelist(DNodelist l)  
+{  
+    int length = 0;  
+    DNodelist *pt = l.next;  
+    while (pt != NULL)  
+    {  
+        length++;  
+        pt = pt->next;  
+    }  
+    return length;  
+}  
+DNodelist *Find_DNodelist(DNodelist &l, int i)  
+{  
+    DNodelist *prev = l.next;  
+    if (prev == NULL)  
+        Error("位置错误!");  
+    int j = 1;  
+    while ((prev->next != NULL) && (j < i))  
+    {  
+        prev = prev->next;  
+        j++;  
+    }  
+    return prev;  
+}  
+void Insert_DNodelist(DNodelist &l, int i, int e)  
+{  
+    DNodelist *prev = Find_DNodelist(l, i);  
+    DNodelist *ptr = (struct DNodelist *)malloc(LEN);  
+    ptr->data = e;  
+    prev->prior->next = ptr;  
+    ptr->prior = prev->prior;  
+    ptr->next = prev;  
+    prev->prior = ptr;  
+}  
+  
+void Delete_DNodelist(DNodelist &l, int i, int e)  
+{  
+    DNodelist *prev = Find_DNodelist(l, i);  
+    e = prev->data;  
+    if (prev->next== NULL)  
+    {  
+     DNodelist *pt = prev->prior;  
+     pt->next = NULL;  
+    }  
+    else  
+    {  
+        prev->prior->next = prev->next;  
+        prev->next->prior = prev->prior;  
+    }  
+    cout << "删除的元素是：" << e << endl;;  
+    delete prev;  
+}  
+  
+void Modly_DNodelist(DNodelist &l, int e)  
+{  
+    DNodelist *prev = l.next;  
+    if (prev == NULL)  
+        Error("位置错误!");  
+    int k = 1;  
+    while ((prev->next != NULL) && (prev->data != e))  
+    {  
+        prev = prev->next;  
+        k++;  
+    }  
+    cout << "元素e在链表中的位置是：" << k << endl;  
+}  
+  
+void Print_DNodelist(DNodelist &l)  
+{  
+    DNodelist *prev = l.next;  
+    if (prev == NULL)  
+        Error("该链表为空表!");  
+    cout << "该链表数据是：" << endl;  
+    while (prev != NULL)  
+    {  
+        cout << prev->data << " ";  
+        prev = prev->next;  
+    }  
+    cout << endl;  
+}  
+  
+int main()  
+{  
+    DNodelist *p = NULL;  
+    int m, n, t, q;  
+    int e = 0;  
+    p = Creat_DNodelist();  
+    cout << "该链表的长度是：" << GetLength_DNodelist(*p) << endl;;  
+    Print_DNodelist(*p);  
+    cout << "请输入你要插入的位置：";  
+    cin >> m;  
+    cout << "请输入你要插入的元素：";  
+    cin >> n;  
+    Insert_DNodelist(*p, m, n);  
+    cout << "插入后的链表数据是：";  
+    cout << "插入后的链表的长度是：" << GetLength_DNodelist(*p)<<endl;  
+    Print_DNodelist(*p);  
+    cout << "请输入你要删除的位置：";  
+    cin >> q;  
+    Delete_DNodelist(*p, q, e);  
+    cout << "删除后的链表的长度是：" << GetLength_DNodelist(*p) << endl;  
+    cout << "删除后的链表数据是：";  
+    Print_DNodelist(*p);  
+    cout << "请输入要查找的元素：";  
+    cin >> t;  
+    Modly_DNodelist(*p, t);  
+    return 0;  
+}  
