@@ -1,0 +1,32 @@
+#include<iostream>
+
+using namespace std;
+class jump
+{
+public:
+	jump(int a=0,int b=0)
+	{
+		x = a;
+		y = b;
+	}
+	int getX() { return x; }
+	int getY() { return y; }
+	jump(const jump&pp)
+	{
+		x = pp.x;
+		y = pp.y;
+	}
+private:
+	int x,y;
+};
+void area(jump pp) 
+{
+	cout<<pp.getX()*pp.getY()<<endl;
+}
+int main()
+{
+	jump a(3,4);
+	area(a);
+	system("pause");
+	return 0;
+}
