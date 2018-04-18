@@ -1,0 +1,40 @@
+
+#include<stdio.h>
+#include<stdlib.h>
+void selete(int a[],int n)
+{
+	int i,j,k,temp;
+	for(i=0;i<=n;i++)
+	{
+     	k=i;
+		for(j=i+1;j<=n;j++)
+		{
+			if(a[j]<a[k])
+				k=j;
+			if(k!=i)
+			{
+				temp=a[i];
+				a[i]=a[k];
+				a[k]=temp;
+			}
+		}
+	}
+       for(i=1;i<=n;i++)
+            {
+               
+                printf("%d ",a[i]);
+            }
+}
+int main()
+{
+	int n,i;
+	int a[20];
+	printf("输入数字个数");
+	scanf("%d",&n);
+	for(i=1;i<=n;i++)
+	{
+		scanf("%d",&a[i]);
+	}
+    selete(a,n);
+	return 0;
+}
